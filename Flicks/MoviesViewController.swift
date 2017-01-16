@@ -10,46 +10,18 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var collectionButton: UIButton!
-    @IBOutlet weak var listButton: UIButton!
-    
-    
     @IBOutlet weak var movieSearch: UISearchBar!
+    
     var movies: [NSDictionary]?
     var filteredMovies: [NSDictionary]?
     
-    @IBAction func useCollectionView(_ sender: AnyObject) {
-        collectionView.isHidden = false
-        tableView.isHidden = true
-        reloadData()
-    }
-    
-    @IBAction func useTableView(_ sender: AnyObject) {
-        tableView.isHidden = false
-        collectionView.isHidden = true
-        reloadData()
-    }
-    
-    @IBAction func onTap(_ sender: AnyObject) {
-        searchBarCancelButtonClicked(movieSearch)
-    }
-    
     func reloadData(){
         tableView.reloadData()
-        collectionView.reloadData()
-    }
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movies = filteredMovies {
-            return movies.count
-        } else {
-            return 0
-        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let movies = filteredMovies {
             return movies.count
         } else {
@@ -72,20 +44,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell?.titleLabel.text = title
         cell?.overviewLabel.text = overview
         cell?.posterView.setImageWith(posterURL!)
-        
-        return cell!
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionCell", for: indexPath) as? MovieCollectionCell
-        let movie = filteredMovies?[indexPath.row]
-        
-        let baseURL = "https://image.tmdb.org/t/p/w500"
-        let posterPath = movie?["poster_path"] as? String
-        
-        let posterURL = URL(string: baseURL + posterPath!)
-        
-        cell?.posterImage.setImageWith(posterURL!)
         
         return cell!
     }
@@ -143,25 +101,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         
-        // initialize main collection
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
-        // start the app in table mode
-        collectionView.isHidden = true
-        tableView.isHidden = false
-        
         // initialize search bar
         movieSearch.delegate = self
+        movieSearch.sizeToFit()
+        navigationItem.titleView = movieSearch
         
         // pull down to refresh
         let refreshControlTable = UIRefreshControl()
         refreshControlTable.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControlTable, at: 0)
-        
-        let refreshControlCollection = UIRefreshControl()
-        refreshControlCollection.addTarget(self, action: #selector(refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
-        collectionView.insertSubview(refreshControlCollection, at: 0)
         
         // get data from network and place into movies/filteredMovies dictionary
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
@@ -192,14 +140,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)
+        let movie = movies![indexPath!.row]
+        
+        // Get the new view controller using 
+        let detailViewController = segue.destination as! DetailViewController
+        
         // Pass the selected object to the new view controller.
+        detailViewController.movie = movie
     }
-    */
 
 }
