@@ -12,17 +12,34 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var detailTitle: UILabel!
     @IBOutlet weak var detailOverview: UILabel!
     @IBOutlet weak var detailImage: UIImageView!
+    @IBOutlet weak var detailScrollView: UIScrollView!
+    @IBOutlet weak var detailInfoView: UIView!
+    @IBOutlet weak var detailRating: UILabel!
     
     var movie: NSDictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        detailScrollView.contentSize = CGSize(width: detailScrollView.frame.size.width, height: detailInfoView.frame.origin.y + detailInfoView.frame.size.height)
+        
         let title = movie["original_title"] as? String
         let overview = movie["overview"] as? String
+        let rating = movie["vote_average"] as? Float
         
         detailTitle.text = title
+        //detailTitle.sizeToFit()
+        detailRating.text = "Rating: \(rating!)"
         detailOverview.text = overview
+        detailOverview.sizeToFit()
+        
+        let baseURL = "https://image.tmdb.org/t/p/w500"
+        
+        if let posterPath = movie?["poster_path"] as? String {
+            let posterURL = URL(string: baseURL + posterPath)
+            detailImage.setImageWith(posterURL!)
+        }
+
 
         // Do any additional setup after loading the view.
     }
