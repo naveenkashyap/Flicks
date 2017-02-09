@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01015BF91E25A97200604240 /* MovieCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01015BF81E25A97200604240 /* MovieCollectionCell.swift */; };
 		01021B7F1E24254900F8383F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01021B7E1E24254900F8383F /* AppDelegate.swift */; };
 		01021B841E24254900F8383F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01021B821E24254900F8383F /* Main.storyboard */; };
 		01021B861E24254900F8383F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01021B851E24254900F8383F /* Assets.xcassets */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01015BF81E25A97200604240 /* MovieCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionCell.swift; sourceTree = "<group>"; };
 		01021B7B1E24254900F8383F /* Flicks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flicks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01021B7E1E24254900F8383F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01021B831E24254900F8383F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				01021B951E243D7500F8383F /* MovieCell.swift */,
-				01015BF81E25A97200604240 /* MovieCollectionCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -236,7 +233,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01015BF91E25A97200604240 /* MovieCollectionCell.swift in Sources */,
 				01021B7F1E24254900F8383F /* AppDelegate.swift in Sources */,
 				0163B9BC1E2C2D8400972814 /* DetailViewController.swift in Sources */,
 				01021B931E2425A900F8383F /* MoviesViewController.swift in Sources */,

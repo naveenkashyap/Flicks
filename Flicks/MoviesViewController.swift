@@ -17,6 +17,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     var movies: [NSDictionary]?
     var filteredMovies: [NSDictionary]?
+    var selectedImage: UIImageView?
     
     func reloadData(){
         tableView.reloadData()
@@ -34,18 +35,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as? MovieCell
         let movie = filteredMovies?[indexPath.row]
-        let title = movie?["original_title"] as? String
-        let overview = movie?["overview"] as? String
-        
-        let baseURL = "https://image.tmdb.org/t/p/w500"
-        
-        if let posterPath = movie?["poster_path"] as? String {
-            let posterURL = URL(string: baseURL + posterPath)
-            cell?.posterView.setImageWith(posterURL!)
-        }
-        
-        cell?.titleLabel.text = title
-        cell?.overviewLabel.text = overview
+        cell?.movie = movie
         return cell!
     }
     
@@ -56,7 +46,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     func refreshControlAction(refreshControl: UIRefreshControl) {
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")!
+        
+        let urlString = "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)"
+        let url = URL(string: urlString)!
         
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
@@ -117,8 +109,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // get data from network and place into movies/filteredMovies dictionary
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")!
-        
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+            let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         MBProgressHUD.showAdded(to: self.view, animated: true)
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
@@ -146,6 +137,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! UITableViewCell
+        selectedImage = cell.imageView
         let indexPath = tableView.indexPath(for: cell)
         let movie = filteredMovies![indexPath!.row]
         
